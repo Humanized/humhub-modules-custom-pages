@@ -12,7 +12,7 @@ use humhub\modules\custom_pages\models\Page;
  */
 class TemplatePage extends \humhub\widgets\JsWidget
 {
-    
+
     /**
      * @inheritdoc
      */
@@ -37,6 +37,12 @@ class TemplatePage extends \humhub\widgets\JsWidget
      * @var boolean defines the editmode is active
      */
     public $editMode;
+
+    /**
+     *
+     * @var boolean   
+     */
+    public $fullscreen = false;
 
     /**
      * @var \humhub\modules\custom_pages\models\CustomContentContainer page instance
@@ -65,7 +71,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public function run()
     {
         \humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset::register($this->getView());
-        
+
         if ($this->canEdit && $this->editMode) {
             \humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset::register($this->getView());
 
@@ -93,14 +99,13 @@ class TemplatePage extends \humhub\widgets\JsWidget
      */
     public function getAttributes()
     {
-        //TODO: fullscreen flag
-        if($this->page instanceof Page && $this->page->navigation_class !== Page::NAV_CLASS_ACCOUNTNAV) {
-            $cssClass = 'container ';
+        if ($this->page instanceof Page && $this->page->navigation_class !== Page::NAV_CLASS_ACCOUNTNAV) {
+            $cssClass = (!$this->fullscreen?'container ':'');
         } else {
             $cssClass = '';
         }
 
-        
+
         $cssClass .= ($this->page->hasAttribute('cssClass') && !empty($this->page->cssClass)) ? $this->page->cssClass : 'custom-pages-page';
         return [
             'class' => $cssClass
