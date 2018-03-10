@@ -42,7 +42,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
      *
      * @var boolean   
      */
-    public $fullscreen = false;
+    public $fullscreen = true;
 
     /**
      * @var \humhub\modules\custom_pages\models\CustomContentContainer page instance
