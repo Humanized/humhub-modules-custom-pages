@@ -4,6 +4,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 
 use Yii;
 use humhub\components\ActiveRecord;
+use humhub\models\UrlOembed;
 
 /**
  * This is the base class for all TemplateContent types.
@@ -291,6 +292,12 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
         $config = \HTMLPurifier_Config::createDefault();
         $config->set('HTML.Attr.Name.UseCDATA', true);
         $config->set('Attr.AllowedFrameTargets', ['_blank']);
+
+        // allow oembed
+        $providers = join('|', array_keys(UrlOembed::getProviders()));
+        $providers = "%^https?://(www.)($providers)/.*$%";
+        $config->set('HTML.SafeIframe', true);
+        $config->set('URI.SafeIframeRegexp', $providers);
 
         return \yii\helpers\HtmlPurifier::process($content, $config);
     }
